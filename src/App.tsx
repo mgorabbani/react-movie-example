@@ -31,15 +31,33 @@ const useStyles = makeStyles((theme) => ({
 function App() {
   const classes = useStyles()
   const [searchValue, setSearchValue] = useState('')
+  const [genres, setGenres] = useState<Record<string, string>[]>([])
   const [list, setList] = useState([])
 
   useEffect(() => {
-    // API
     Api.get('/search/movie', { params: { query: searchValue } }).then((r) => {
       console.log(r.data.results)
       setList(r.data.results)
     })
   }, [searchValue])
+
+  useEffect(() => {
+    Api.get('/genre/movie/list').then((r) => {
+      setGenres(r.data.genres)
+    })
+  }, [])
+
+  const filterBy = () => {
+    const year = 2021
+    console.log(list)
+    const genre = 33
+    const filteredList = list.filter(({ release_date }: any) =>
+      release_date?.contains(year),
+    )
+    setList(filteredList)
+    list.filter(({ genre_ids }: any) => {})
+  }
+
   return (
     <Container>
       <AppBar position='static'>
@@ -56,7 +74,9 @@ function App() {
         </Grid>
         <Grid item md={3}>
           <Grid container>
-            <Dropdown />
+            <Dropdown
+            // menu={{label:'Year',value:'value'},}
+            />
             <Dropdown />
           </Grid>
         </Grid>
@@ -66,7 +86,9 @@ function App() {
         {list?.map(({ id, original_title, genre_ids, poster_path }) => {
           return (
             <Grid item xs={3} key={id}>
-              <MovieItem {...{ id, original_title, genre_ids, poster_path }} />
+              <MovieItem
+                {...{ id, original_title, genre_ids, poster_path, genres }}
+              />
             </Grid>
           )
         })}

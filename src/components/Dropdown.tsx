@@ -2,6 +2,8 @@ import React from 'react'
 import Button from '@material-ui/core/Button'
 import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
+import { TextField } from '@material-ui/core'
+import { genres } from '../utils/getGenreNameFromId'
 
 const Dropdown = () => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
@@ -13,27 +15,26 @@ const Dropdown = () => {
   const handleClose = () => {
     setAnchorEl(null)
   }
+  console.log(Object.entries(genres))
 
   return (
     <div>
-      <Button
-        aria-controls='simple-menu'
-        aria-haspopup='true'
-        onClick={handleClick}
+      <TextField
+        id='filled-select-currency-native'
+        select
+        label='Filter By Genre'
+        value={10}
+        onChange={() => {}}
+        SelectProps={{
+          native: true,
+        }}
       >
-        Open Menu
-      </Button>
-      <Menu
-        id='simple-menu'
-        anchorEl={anchorEl}
-        keepMounted
-        open={Boolean(anchorEl)}
-        onClose={handleClose}
-      >
-        <MenuItem onClick={handleClose}>Profile</MenuItem>
-        <MenuItem onClick={handleClose}>My account</MenuItem>
-        <MenuItem onClick={handleClose}>Logout</MenuItem>
-      </Menu>
+        {Object.entries(genres).map((genre: any) => (
+          <option key={genre[0]} value={genre[1]}>
+            {genre[1]}
+          </option>
+        ))}
+      </TextField>
     </div>
   )
 }
