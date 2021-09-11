@@ -5,14 +5,15 @@ import {
   Container,
   Grid,
   makeStyles,
-  Paper,
   Toolbar,
   Typography,
 } from '@material-ui/core'
 import MovieItem from './components/MovieItem'
 import SearchBar from './components/SearchBar'
 import Api from './utils/api'
-import Dropdown from './components/Dropdown'
+import Dropdown from './components/FilterDropdown'
+import FilterYearInput from './components/FilterYearInput'
+import { filterBy } from './utils/common'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -31,32 +32,31 @@ const useStyles = makeStyles((theme) => ({
 function App() {
   const classes = useStyles()
   const [searchValue, setSearchValue] = useState('')
-  const [genres, setGenres] = useState<Record<string, string>[]>([])
+  const [genreId, setGenreId] = useState('')
+  const [year, setYear] = useState('')
   const [list, setList] = useState([])
+  const [filteredList, setFilteredList] = useState([])
 
   useEffect(() => {
-    Api.get('/search/movie', { params: { query: searchValue } }).then((r) => {
-      console.log(r.data.results)
-      setList(r.data.results)
-    })
+    if (searchValue) {
+      Api.get('/search/movie', { params: { query: searchValue } }).then((r) => {
+        setList(r.data.results)
+        setFilteredList(r.data.results)
+      })
+    }
   }, [searchValue])
 
   useEffect(() => {
-    Api.get('/genre/movie/list').then((r) => {
-      setGenres(r.data.genres)
-    })
-  }, [])
+    console.log(year, genreId)
 
-  const filterBy = () => {
-    const year = 2021
-    console.log(list)
-    const genre = 33
-    const filteredList = list.filter(({ release_date }: any) =>
-      release_date?.contains(year),
-    )
-    setList(filteredList)
-    list.filter(({ genre_ids }: any) => {})
-  }
+    if (year || genreId) {
+      const filterdList = filterBy(genreId, year, list)
+      setFilteredList(filterdList)
+      console.log(filterdList)
+    } else {
+      setFilteredList(list)
+    }
+  }, [genreId, year])
 
   return (
     <Container>
@@ -74,24 +74,30 @@ function App() {
         </Grid>
         <Grid item md={3}>
           <Grid container>
-            <Dropdown
-            // menu={{label:'Year',value:'value'},}
-            />
-            <Dropdown />
+            <Dropdown setGenreId={setGenreId} genreId={genreId} />
+            <FilterYearInput setYear={setYear} year={year} />
           </Grid>
         </Grid>
       </Grid>
 
       <Grid container spacing={3}>
-        {list?.map(({ id, original_title, genre_ids, poster_path }) => {
-          return (
-            <Grid item xs={3} key={id}>
-              <MovieItem
-                {...{ id, original_title, genre_ids, poster_path, genres }}
-              />
-            </Grid>
-          )
-        })}
+        {filteredList?.map(
+          ({ id, original_title, genre_ids, poster_path, release_date }) => {
+            return (
+              <Grid item xs={3} key={id}>
+                <MovieItem
+                  {...{
+                    id,
+                    original_title,
+                    genre_ids,
+                    poster_path,
+                    release_date,
+                  }}
+                />
+              </Grid>
+            )
+          },
+        )}
       </Grid>
     </Container>
   )

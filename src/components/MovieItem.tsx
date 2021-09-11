@@ -39,6 +39,7 @@ type MovieItemType = {
   original_title: string
   genre_ids: number[]
   poster_path: string
+  release_date: string
 }
 
 const MovieItem: React.FC<MovieItemType> = ({
@@ -46,6 +47,7 @@ const MovieItem: React.FC<MovieItemType> = ({
   original_title,
   genre_ids,
   poster_path,
+  release_date,
 }) => {
   const classes = useStyles()
 
@@ -77,9 +79,7 @@ const MovieItem: React.FC<MovieItemType> = ({
           {genre_ids.map((id) => getGenreNameFromId(id)).join(', ')}
         </Typography>
         <Typography variant='body2' component='p'>
-          well meaning and kindly.
-          <br />
-          {'"a benevolent smile"'}
+          {release_date}
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
