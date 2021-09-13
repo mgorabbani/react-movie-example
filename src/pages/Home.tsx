@@ -1,13 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import {
-  AppBar,
-  Button,
-  Container,
-  Grid,
-  makeStyles,
-  Toolbar,
-  Typography,
-} from '@material-ui/core'
+import { Container, Grid, makeStyles } from '@material-ui/core'
 
 import MovieItem from '../components/MovieItem'
 import SearchBar from '../components/SearchBar'
@@ -17,20 +9,12 @@ import FilterYearInput from '../components/FilterYearInput'
 import { filterBy } from '../utils/common'
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-  },
   header: {
     margin: theme.spacing(4, 0),
   },
   filter: {
     display: 'flex',
     alignItems: 'flex-end',
-  },
-  paper: {
-    padding: theme.spacing(2),
-    textAlign: 'center',
-    color: theme.palette.text.secondary,
   },
 }))
 
