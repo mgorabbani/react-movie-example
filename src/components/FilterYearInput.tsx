@@ -9,7 +9,7 @@ const FilterYearInput: React.FC<DropdownType> = ({ setYear, year }) => (
   <TextField
     label='Filter By Year'
     value={year}
-    onChange={(e) => {
+    onChange={(e: React.ChangeEvent<{ value: unknown }>) => {
       setYear(e.currentTarget.value)
     }}
   ></TextField>

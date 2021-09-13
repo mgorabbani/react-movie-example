@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react'
-import { Container, Grid, makeStyles } from '@material-ui/core'
+import { Container, Grid, makeStyles, Select } from '@material-ui/core'
 
 import MovieItem from '../components/MovieItem'
 import SearchBar from '../components/SearchBar'
 import Api from '../utils/api'
 import Dropdown from '../components/FilterDropdown'
 import FilterYearInput from '../components/FilterYearInput'
-import { filterBy } from '../utils/common'
+import { filterBy, sortByName, sortbyYear } from '../utils/common'
+import Sort from '../components/Sort'
 
 const useStyles = makeStyles((theme) => ({
   header: {
@@ -26,6 +27,8 @@ function HomePage() {
   const [list, setList] = useState([])
   const [filteredList, setFilteredList] = useState([])
 
+  const [sort, setSort] = React.useState('')
+
   useEffect(() => {
     if (searchValue) {
       Api.get('/search/movie', { params: { query: searchValue } }).then((r) => {
@@ -36,16 +39,25 @@ function HomePage() {
   }, [searchValue])
 
   useEffect(() => {
-    console.log(year, genreId)
-
     if (year || genreId) {
-      const filterdList = filterBy(genreId, year, list)
-      setFilteredList(filterdList)
-      console.log(filterdList)
+      const newList = filterBy(genreId, year, list)
+      setFilteredList(newList)
     } else {
       setFilteredList(list)
     }
   }, [genreId, year])
+
+  useEffect(() => {
+    if (sort === 'name') {
+      const sortedList: [] = sortByName(filteredList) || []
+      setFilteredList([...sortedList])
+    }
+
+    if (sort === 'year') {
+      const sortedList: [] = sortbyYear(filteredList) || []
+      setFilteredList([...sortedList])
+    }
+  }, [sort])
 
   return (
     <Container>
@@ -58,6 +70,7 @@ function HomePage() {
             <Dropdown setGenreId={setGenreId} genreId={genreId} />
             <FilterYearInput setYear={setYear} year={year} />
           </div>
+          <Sort sort={sort} setSort={setSort} />
         </Grid>
       </Grid>
 

@@ -8,10 +8,9 @@ type DropdownType = {
 }
 const Dropdown: React.FC<DropdownType> = ({ setGenreId, genreId }) => (
   <TextField
-    id='filled-select-currency-native'
     select
     value={genreId}
-    onChange={(e) => {
+    onChange={(e: React.ChangeEvent<{ value: unknown }>) => {
       setGenreId(e.currentTarget.value)
     }}
     SelectProps={{
