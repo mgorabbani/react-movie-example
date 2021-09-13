@@ -42,18 +42,6 @@ export const FavoritePage = () => {
     setList(Object.values(JSON.parse(favouriteItem)))
   }, [])
 
-  const hanldeRemoveFavourite = (id: string) => {
-    const favouriteMovies = localStorage.getItem('favourite') || ''
-
-    let parsedFavourite: Record<string, any> = {}
-    if (favouriteMovies) {
-      parsedFavourite = JSON.parse(favouriteMovies)
-    }
-
-    delete parsedFavourite[id]
-    localStorage.setItem('favourite', JSON.stringify(parsedFavourite))
-  }
-
   return (
     <Container className={classes.body}>
       <Grid container spacing={3}>

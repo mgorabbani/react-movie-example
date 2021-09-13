@@ -55,11 +55,17 @@ const MovieItem: React.FC<MovieItemType> = ({
     const favouriteMovies = localStorage.getItem('favourite') || ''
 
     let parsedFavourite: Record<string, any> = {}
+
     if (favouriteMovies) {
       parsedFavourite = JSON.parse(favouriteMovies)
     }
 
-    parsedFavourite[id] = { id, original_title, genre_ids, poster_path }
+    if (parsedFavourite[id]) {
+      delete parsedFavourite[id]
+    } else {
+      parsedFavourite[id] = { id, original_title, genre_ids, poster_path }
+    }
+
     localStorage.setItem('favourite', JSON.stringify(parsedFavourite))
   }
 
