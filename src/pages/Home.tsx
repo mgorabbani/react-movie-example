@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Container, Grid, makeStyles, Select } from '@material-ui/core'
+import { Container, Grid, makeStyles } from '@material-ui/core'
 
 import MovieItem from '../components/MovieItem'
 import SearchBar from '../components/SearchBar'
@@ -70,7 +70,9 @@ function HomePage() {
             <Dropdown setGenreId={setGenreId} genreId={genreId} />
             <FilterYearInput setYear={setYear} year={year} />
           </div>
-          <Sort sort={sort} setSort={setSort} />
+          <Grid container justifyContent='flex-end'>
+            <Sort sort={sort} setSort={setSort} />
+          </Grid>
         </Grid>
       </Grid>
 

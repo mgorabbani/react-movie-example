@@ -8,12 +8,10 @@ import {
   IconButton,
   Typography,
 } from '@material-ui/core'
-import { red } from '@material-ui/core/colors'
 import FavoriteIcon from '@material-ui/icons/Favorite'
-
 import { getGenreNameFromId } from '../utils/getGenreNameFromId'
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   root: {
     maxWidth: 345,
   },
