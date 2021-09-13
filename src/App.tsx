@@ -7,13 +7,24 @@ import {
   makeStyles,
   Toolbar,
   Typography,
+  Link,
 } from '@material-ui/core'
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link as RouterLink,
+} from 'react-router-dom'
+
 import MovieItem from './components/MovieItem'
 import SearchBar from './components/SearchBar'
 import Api from './utils/api'
 import Dropdown from './components/FilterDropdown'
 import FilterYearInput from './components/FilterYearInput'
 import { filterBy } from './utils/common'
+import Home from './pages/Home'
+import HomePage from './pages/Home'
+import { FavoritePage } from './pages/Favourite'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -22,10 +33,17 @@ const useStyles = makeStyles((theme) => ({
   header: {
     margin: theme.spacing(4, 0),
   },
+  logo: {
+    flexGrow: 1,
+  },
   paper: {
     padding: theme.spacing(2),
     textAlign: 'center',
     color: theme.palette.text.secondary,
+  },
+  link: {
+    color: '#fff',
+    marginLeft: theme.spacing(2),
   },
 }))
 
@@ -59,47 +77,44 @@ function App() {
   }, [genreId, year])
 
   return (
-    <Container>
-      <AppBar position='static'>
-        <Toolbar>
-          <Typography variant='h6'>MVP Match Movie</Typography>
-          <Button color='inherit'>Home</Button>
-          <Button color='inherit'>Favourite</Button>
-        </Toolbar>
-      </AppBar>
+    <Router>
+      <Container>
+        <AppBar position='static'>
+          <Toolbar>
+            <Typography variant='h6' className={classes.logo}>
+              MVP Match Movie
+            </Typography>
+            <Grid>
+              <Link
+                to='/'
+                component={RouterLink}
+                underline='none'
+                className={classes.link}
+              >
+                Home
+              </Link>
+              <Link
+                to='/favourite'
+                component={RouterLink}
+                className={classes.link}
+                underline='none'
+              >
+                Favourite
+              </Link>
+            </Grid>
+          </Toolbar>
+        </AppBar>
 
-      <Grid container justifyContent='space-between' className={classes.header}>
-        <Grid item md={4}>
-          <SearchBar setSearchValue={setSearchValue} />
-        </Grid>
-        <Grid item md={3}>
-          <Grid container>
-            <Dropdown setGenreId={setGenreId} genreId={genreId} />
-            <FilterYearInput setYear={setYear} year={year} />
-          </Grid>
-        </Grid>
-      </Grid>
-
-      <Grid container spacing={3}>
-        {filteredList?.map(
-          ({ id, original_title, genre_ids, poster_path, release_date }) => {
-            return (
-              <Grid item xs={3} key={id}>
-                <MovieItem
-                  {...{
-                    id,
-                    original_title,
-                    genre_ids,
-                    poster_path,
-                    release_date,
-                  }}
-                />
-              </Grid>
-            )
-          },
-        )}
-      </Grid>
-    </Container>
+        <Switch>
+          <Route exact path='/'>
+            <HomePage />
+          </Route>
+          <Route exact path='/favourite'>
+            <FavoritePage />
+          </Route>
+        </Switch>
+      </Container>
+    </Router>
   )
 }
 

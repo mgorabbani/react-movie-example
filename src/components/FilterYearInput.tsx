@@ -6,15 +6,13 @@ type DropdownType = {
   year?: string
 }
 const FilterYearInput: React.FC<DropdownType> = ({ setYear, year }) => (
-  <div>
-    <TextField
-      label='Filter By Year'
-      value={year}
-      onChange={(e) => {
-        setYear(e.currentTarget.value)
-      }}
-    ></TextField>
-  </div>
+  <TextField
+    label='Filter By Year'
+    value={year}
+    onChange={(e) => {
+      setYear(e.currentTarget.value)
+    }}
+  ></TextField>
 )
 
 export default FilterYearInput
