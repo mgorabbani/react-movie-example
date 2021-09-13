@@ -14,10 +14,13 @@ export const FavoritePage = () => {
   const [list, setList] = useState([])
 
   useEffect(() => {
-    const favouriteItem = localStorage.getItem('favourite') || ''
+    const favouriteItem = localStorage.getItem('favourite') || '[]'
     setList(Object.values(JSON.parse(favouriteItem)))
   }, [])
 
+  if (list.length === 0) {
+    return <div>You have no Favourite Movie!</div>
+  }
   return (
     <Container className={classes.body}>
       <Grid container spacing={3}>
